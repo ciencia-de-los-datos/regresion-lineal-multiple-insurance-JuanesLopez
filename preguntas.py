@@ -21,8 +21,7 @@ def pregunta_01():
     # df = pd.read_csv('C:/Users/jlopezl/OneDrive - Renting Colombia S.A/Archivos/Personal/Especialización/Ciencia de los datos/regresion-lineal-multiple-insurance-JuanesLopez/insurance.csv')
     df = pd.read_csv('insurance.csv')
     # Asigne la columna `charges` a la variable `y`.
-    y= df.charges.values.reshape(-1,1)
-
+    y= df.charges
     # Asigne una copia del dataframe `df` a la variable `X`.
     X = df.copy()
 
