@@ -83,28 +83,26 @@ def pregunta_03():
     pipeline = Pipeline(
         steps=[
             # Paso 1: Construya un column_transformer que aplica OneHotEncoder a las
-            # variables categ贸ricas, y no aplica ninguna transformaci贸n al resto de
+            # variables categ髍icas, y no aplica ninguna transformaci髇 al resto de
             # las variables.
             (
                 "column_transfomer",
                 make_column_transformer(
-                    [(
-                        'encoder',
-                        OneHotEncoder(),
-                        make_column_selector(dtype_include=object),
-                    )],
-                    remainder='passthrough',
+                    ( OneHotEncoder(),
+                        make_column_selector(dtype_include=object) 
+                    ),
+                    remainder="passthrough",
                 ),
             ),
             # Paso 2: Construya un selector de caracter韘ticas que seleccione las K
             # caracter韘ticas m醩 importantes. Utilice la funci髇 f_regression.
             (
                 "selectKBest",
-                SelectKBest(score_func=f_regression),
+                SelectKBest(f_regression),
             ),
             # Paso 3: Construya un modelo de regresi髇 lineal.
             (
-                "linearRegression",
+                "linear_regression",
                 LinearRegression(),
             ),
         ],
@@ -113,25 +111,25 @@ def pregunta_03():
     # Cargua de las variables.
     X_train, _, y_train, _ = pregunta_02()
 
-    # Defina un diccionario de par谩metros para el GridSearchCV. Se deben
+    # Defina un diccionario de par醡etros para el GridSearchCV. Se deben
     # considerar valores desde 1 hasta 11 regresores para el modelo
     param_grid = {
         "selectKBest__k": range(1, 12),
     }
 
     # Defina una instancia de GridSearchCV con el pipeline y el diccionario de
-    # par谩metros. Use cv = 5, y como m茅trica de evaluaci贸n el valor negativo del
-    # error cuadr谩tico medio.
+    # par醡etros. Use cv = 5, y como m閠rica de evaluaci髇 el valor negativo del
+    # error cuadr醫ico medio.
     gridSearchCV = GridSearchCV(
         estimator=pipeline,
         param_grid=param_grid,
         cv=5,
-        scoring='neg_mean_squared_error',
+        scoring="neg_mean_squared_error",
         refit=True,
-        return_train_score=False,
+        return_train_score=True,
     )
 
-    # B煤sque la mejor combinaci贸n de regresores
+    # B鷖que la mejor combinaci髇 de regresores
     gridSearchCV.fit(X_train, y_train)
 
     # Retorne el mejor modelo
